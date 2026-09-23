@@ -1,0 +1,125 @@
+# Implementation Plan - AyuTrace: Agri-Fresh & Spoilage 0% Intelligence Engine
+
+Building **AyuTrace**, an autonomous GIS surplus routing, predictive spoilage diagnostics, and dynamic clearance pricing platform for agricultural cooperatives and cold-chain logistics networks.
+
+## User Review Required
+
+> [!IMPORTANT]
+> The application will be created as a full Next.js 14/15 App Router application with Tailwind CSS, Leaflet/React-Leaflet dark GIS map, Turf.js spatial clustering, OSRM 2-opt TSP routing engine, live IoT decay telemetry simulator, multi-tier dispatch engine, dynamic flash-sale clearance portal, and interactive B2B booking flow.
+> Once verified locally, the codebase will be committed to Git and set up for the repository at `https://github.com/priyanshu-sarjan/Bharat-Academix.git`.
+
+---
+
+## Proposed Architecture & Component Design
+
+### 1. Technology Stack
+- **Framework:** Next.js (App Router, React 19, TypeScript)
+- **Styling:** Tailwind CSS, Custom Dark Logistics Theme (`#0B0F17` obsidian canvas)
+- **Map Engine:** Leaflet & React-Leaflet with CartoDB Dark Matter tiles, custom SVG markers for surplus hotspots, moving cold-chain truck icons, dynamic heat-rings, and colored TSP polyline routes.
+- **Spatial & Algorithmic Engines:**
+  - `Turf.js`: Regional cluster radius deduplication (50m cluster radius) and convex hull bounding.
+  - `OSRM + 2-Opt TSP Solver`: Multi-stop route optimization with real-time waypoint polyline rendering.
+  - `Dynamic Decay Simulator`: Temperature-dependent exponential decay function ($>8^\circ\text{C}$ spike logic).
+- **State & Data:** Zustand store for real-time telemetry, active clusters, trucks, flash offers, and audit logs.
+- **Icons & UI:** Lucide React, Framer Motion for smooth tab transitions and telemetry badges, Recharts for telemetry trend charts.
+
+---
+
+## Key Feature Modules
+
+#### 1. Impact & Metrics Header Ribbon
+- KPI Readouts: Spoilage Prevented (Tons & %), Fuel/Mileage Saved (-35%), Open-Standard Savings (100% Zero proprietary license fees), Revenue Recovered (₹).
+- Real-time IoT simulator controls: Play/Pause simulation, Speed toggle (1x, 5x, 10x), Trigger Emergency Temp Spike button, Add Surplus Cluster modal trigger.
+
+#### 2. Interactive GIS Command Center Map (`/components/gis-map`)
+- Leaflet interactive dark map centered on major Indian agricultural corridors (Nashik-Mumbai, Gwalior-Agra, Ariyalur-Chennai, Bhopal-Indore).
+- Pulsing surplus cluster nodes (color-coded Tier 1 Red, Tier 2 Amber, Tier 3 Cyan/Emerald).
+- Cold-Chain Fleet overlay with active GPS position markers and status indicators.
+- TSP optimized multi-stop route polylines connecting farm surplus nodes to target Mandis.
+- Node popups with full crop specs, decay score, estimated shelf-life countdown, and action buttons.
+
+#### 3. Predictive Spoilage & Cold-Chain Telemetry Panel (`/components/telemetry`)
+- Live sensor readouts: Ambient Core Temp (°C), Humidity (%), Vibration/Transit Health (m/s²), Decay Velocity.
+- Dynamic exponential decay calculation engine with real-time alerts when ambient temp exceeds $8^\circ\text{C}$.
+- Interactive Recharts graphs showing temperature history vs projected shelf-life decay curve.
+
+#### 4. Multi-Tier Autonomous Dispatch & Decision Engine (`/components/dispatch`)
+- Kanban/Card boards grouped by dispatch tiers:
+  - **Tier 1 (Critical / <24h shelf-life):** Auto-reroute to closest Mandi + trigger Flash Clearance Sale.
+  - **Tier 2 (Moderate / 24–72h):** AI-optimized cold-chain truck priority dispatch.
+  - **Tier 3 (Standard / >72h):** Standard cooperative warehouse transit.
+- 2-Opt TSP solver interface: Displays distance matrices, optimized stop sequences, transit time saved, and diesel fuel reduction (~35%).
+
+#### 5. Rescue Flash Clearance Portal (`/components/flash-portal`)
+- Dynamic B2B Mandi / Wholesale clearance cards with automated price slashes based on decay score & overproduction margin.
+- Expiration countdown timers, location badges, crop quality metrics.
+- 1-Click Wholesale Reserve/Purchase modal generating digital manifest & QR verification code.
+
+#### 6. IoT Telemetry Simulator & API Handlers (`/app/api/`)
+- API Route Handlers for `/api/telemetry`, `/api/dispatch`, `/api/clusters`, `/api/clearance`.
+- Background simulation engine providing live updates to temperature, vibration, decay rates, and truck positions.
+
+---
+
+## Proposed File Structure
+
+```
+Bharat Academix/
+├── src/
+│   ├── app/
+│   │   ├── api/
+│   │   │   ├── clusters/route.ts
+│   │   │   ├── dispatch/route.ts
+│   │   │   ├── telemetry/route.ts
+│   │   │   └── clearance/route.ts
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   └── globals.css
+│   ├── components/
+│   │   ├── Header.tsx
+│   │   ├── ImpactRibbon.tsx
+│   │   ├── GISCommandMap.tsx (SSR-safe dynamic Leaflet map)
+│   │   ├── DynamicMapContent.tsx
+│   │   ├── TelemetryPanel.tsx
+│   │   ├── DispatchEngine.tsx
+│   │   ├── FlashClearancePortal.tsx
+│   │   ├── AddClusterModal.tsx
+│   │   ├── ReserveModal.tsx
+│   │   └── ui/ (Shadcn-like buttons, dialogs, badges, cards)
+│   ├── lib/
+│   │   ├── gis/
+│   │   │   ├── turfCluster.ts
+│   │   │   └── tspSolver.ts
+│   │   ├── simulator/
+│   │   │   └── decayCalculator.ts
+│   │   └── mockData.ts
+│   ├── store/
+│   │   └── useAyuTraceStore.ts
+│   └── types/
+│       └── ayutrace.ts
+├── public/
+│   └── map-markers/
+├── README.md
+├── package.json
+├── tailwind.config.js
+└── tsconfig.json
+```
+
+---
+
+## Verification Plan
+
+### Automated & Build Verification
+1. `npm run build`: Ensure zero TypeScript errors and flawless Next.js production compilation.
+2. `npm run lint`: Verify code style and syntax consistency.
+
+### Manual Verification
+1. Launch local dev server (`npm run dev`) and test all main tab views: GIS Command Map, Telemetry Panel, Multi-Tier Dispatch Board, Flash Clearance Portal.
+2. Test simulation controls:
+   - Click "Trigger Temp Spike (>8°C)" on a cold-chain truck. Verify exponential decay acceleration and auto-tier promotion to Tier 1.
+   - Observe automatic flash clearance offer generation for spoiled/critical crops.
+3. Test 1-click B2B wholesale reservation modal and digital manifest QR code generation.
+4. Verify Leaflet map rendering with dark tiles, surplus markers, active truck icons, and TSP polylines.
+5. Initialize Git repository, create a clean initial commit, set remote to `https://github.com/priyanshu-sarjan/Bharat-Academix.git`, and document git status.
+
+---
